@@ -44,7 +44,7 @@ public class WebscraperutilTest {
     }
 
     @Test
-    public void testScrapeNotEmpty() {
+    public void testCheckValidRetailUrl() {
 
         URL url;
         try {
@@ -57,7 +57,7 @@ public class WebscraperutilTest {
     }
 
     @Test
-    public void testScrapeHasTotalAndResults() {
+    public void testCheckTotalUnitPrice() {
 
         URL url;
         try {
@@ -70,14 +70,14 @@ public class WebscraperutilTest {
     }
 
     @Test
-    public void testGetProductInfoReturnsNull() {
+    public void testCheckValidUrl() {
         String url = "http://www.sainsburys.co.uk";
         GroceriesInformation product = webscaper.getProductInformations(url);
         assertNull(product);
     }
 
     @Test
-    public void testFailureproductvalidation() {
+    public void testCheckFailureProductInformation() {
         String url = "https://www.sainsburys.co.uk/shop/gb/groceries/ripe---ready/sainsburys-avocado--ripe---ready-x2";
         GroceriesInformation product = webscaper.getProductInformations(url);
 
@@ -91,7 +91,7 @@ public class WebscraperutilTest {
 
 
     @Test
-    public void testGetProductInfoReturnsObject() {
+    public void testCheckValidProductInformation() {
         String url = "https://www.sainsburys.co.uk/shop/gb/groceries/ripe---ready/sainsburys-avocado--ripe---ready-x2";
         GroceriesInformation product = webscaper.getProductInformations(url);
 
@@ -104,7 +104,7 @@ public class WebscraperutilTest {
     }
 
     @Test
-    public void testScrapeReturnsProductInfos() {
+    public void testCheckProductDescriptionInfo() {
 
         URL url;
         try {
