@@ -4,15 +4,15 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.json.simple.*;
 import org.jsoup.*;
 import org.jsoup.nodes.Document;
+import com.google.gson.*;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import java.util.Map;
 import java.util.*;
-import java.io.*;
+
 
 /**
  * Webscraperutil class is holding  logic to extract groceries product
@@ -67,9 +67,11 @@ public class Webscraperutil {
      * Webscraper method is used to process given input url and return result as JSON.
     **/
     public String webScaper(URL url) {
-        JSONArray jsonarr = new JSONArray();
-
+        Map obj=new LinkedHashMap();
+        List jsonarr = new ArrayList();
+        Gson gson = new GsonBuilder().setPrettyPrinting().disableHtmlEscaping().create();
         float total = 0.0f;
+
         Connection con = Jsoup.connect(url.toString());
 
         if (con == null) {
@@ -82,12 +84,11 @@ public class Webscraperutil {
             }
             Elements link_element = doc.select("a[href*=groceries/ripe]");
             for (Element element: link_element) {
-                //System.out.println(element.attr("abs:href"));
                 String product_url = element.attr("abs:href");
                 GroceriesInformation prdinfo = getProductInformations(product_url);
-               // System.out.println(prdinfo);
 
-                jsonarr.add(prdinfo.constructJsonObj());
+                jsonarr.add(prdinfo);
+
                 total += prdinfo.getUnitPrice();
             }
         } catch (IOException scraper_ex) {
@@ -95,18 +96,12 @@ public class Webscraperutil {
         }
 
 
-        Map obj=new LinkedHashMap();
 
         obj.put("results",jsonarr);
         obj.put("total", total);
 
-        StringWriter out = new StringWriter();
-        try {
-            JSONValue.writeJSONString(obj, out);
-        } catch (IOException scraper_ex){
-            Logger.getLogger(Webscraperutil.class.getName()).log(Level.SEVERE, null, scraper_ex);
-        }
-        String jsonText = out.toString();
-        return jsonText;
+        String gsontext = gson.toJson(obj);
+
+        return gsontext;
     }
 }

@@ -1,7 +1,5 @@
 package com.saingroceris.retailwebscraper;
 
-import org.json.simple.JSONObject;
-
 /**
  * GroceriesInformation class is holding object module for groceries result JSON data.
  */
@@ -16,19 +14,6 @@ public class GroceriesInformation {
         this.size = size;
         this.unitPrice = unitPrice;
         this.description = description;
-    }
-    
-    /**
-     * constructJsonObj method - used to construct JSON object .
-     */
-    public JSONObject constructJsonObj() {
-        JSONObject json = new JSONObject();
-        json.put("title", title);
-        json.put("size", size);
-        json.put("unit_price", unitPrice);
-        json.put("description", description);
-        
-        return json;
     }
 
     public void setTitle(String title) {
