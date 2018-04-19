@@ -10,6 +10,9 @@ import org.jsoup.nodes.Document;
 
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import java.util.Map;
+import java.util.*;
+import java.io.*;
 
 /**
  * Webscraperutil class is holding  logic to extract groceries product
@@ -64,12 +67,11 @@ public class Webscraperutil {
      * Webscraper method is used to process given input url and return result as JSON.
     **/
     public String webScaper(URL url) {
-        JSONObject json = new JSONObject();
         JSONArray jsonarr = new JSONArray();
-        json.put("results", jsonarr);
+
         float total = 0.0f;
-       Connection con = Jsoup.connect(url.toString());
-        //System.out.println(con);
+        Connection con = Jsoup.connect(url.toString());
+
         if (con == null) {
             return "{}";
         }
@@ -91,8 +93,20 @@ public class Webscraperutil {
         } catch (IOException scraper_ex) {
             Logger.getLogger(Webscraperutil.class.getName()).log(Level.SEVERE, null, scraper_ex);
         }
-        json.put("total", total);
-        
-        return json.toJSONString();
+
+
+        Map obj=new LinkedHashMap();
+
+        obj.put("results",jsonarr);
+        obj.put("total", total);
+
+        StringWriter out = new StringWriter();
+        try {
+            JSONValue.writeJSONString(obj, out);
+        } catch (IOException scraper_ex){
+            Logger.getLogger(Webscraperutil.class.getName()).log(Level.SEVERE, null, scraper_ex);
+        }
+        String jsonText = out.toString();
+        return jsonText;
     }
 }
